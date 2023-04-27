@@ -221,7 +221,7 @@ toSqlData (LBlob b)     = SQLBlob b
 toSqlData (LNull)       = SQLNull
 toSqlData (LJust x)     = toSqlData x
 toSqlData (LCustom _ l) = toSqlData l
-toSqlData (LUUID x)     = SQLBlob (toStrict $ toByteString x)
+toSqlData (LUUID x)     = SQLText (toText x)
 
 fromSqlData :: SQLData -> SqlValue
 fromSqlData (SQLInteger i) = SqlInt64 $ fromIntegral i
