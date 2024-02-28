@@ -16,7 +16,7 @@ import Database.Selda.Column
       Row(..),
       Col(..),
       Columns(..) )
-import Database.Selda.Generic ( gNew, relNew, Relational, params )
+import Database.Selda.Generic ( relNew, Relational, params )
 import Database.Selda.Inner
     ( Aggregates(..),
       LeftCols,
@@ -43,7 +43,6 @@ import Database.Selda.Table.Type ( ColInfo(colExpr), Table(Table) )
 import Database.Selda.Transform ( colNames, state2sql, allCols )
 import Control.Monad.State.Strict ( MonadState(put, get), modify )
 import Data.Proxy ( Proxy(..) )
-import GHC.Generics (Rep)
 import Unsafe.Coerce ( unsafeCoerce )
 
 -- | Query the given table.

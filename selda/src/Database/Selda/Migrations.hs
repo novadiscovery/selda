@@ -25,7 +25,7 @@ import Database.Selda.Table.Validation (ValidationError (..))
 import Database.Selda.Types (mkTableName, fromTableName, rawTableName)
 import Database.Selda.Validation
     ( TableDiff(TableOK), validateTable, validateSchema, diffTable )
-
+import Prelude hiding (log)
 -- | Wrapper for user with 'migrateAll', enabling multiple migrations to be
 --   packed into the same list:
 --
@@ -118,12 +118,12 @@ autoMigrateLog fks steps log = wrap fks $ do
     revSteps = reverse steps
     finalState = [diffTable to | Migration _ to _ <- head revSteps]
 
-    calculateSteps n log (step:ss) = do
+    calculateSteps n log' (step:ss) = do
       diffs <- mapM (\(Migration from _ _) -> diffTable from) step
       if all (== TableOK) diffs
         then return [step]
         else do
-          log $ "Diff when checking current state against start state of step " <> show n <> ":\n" <> show diffs
+          log' $ "Diff when checking current state against start state of step " <> show n <> ":\n" <> show diffs
           (step:) <$> calculateSteps (n-1) log ss
     calculateSteps _ _ [] = do
       throwM $ ValidationError "no starting state matches the current state of the database"

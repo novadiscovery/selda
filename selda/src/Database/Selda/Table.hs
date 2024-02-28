@@ -16,6 +16,7 @@ module Database.Selda.Table
   , tableExpr
   , isAutoPrimary, isPrimary, isUnique
   ) where
+import Data.Kind (Type)
 import Data.Text (Text)
 import Data.Typeable ( Proxy(..) )
 import Database.Selda.Types ( type (:*:), TableName, ColName )
@@ -163,7 +164,7 @@ tidy ci = ci {colAttrs = snub $ colAttrs ci}
 
 -- | Some attribute that may be set on a column of type @c@, in a table of
 --   type @t@.
-data Attribute (g :: * -> * -> *) t c
+data Attribute (g :: Type -> Type -> Type) t c
   = Attribute [ColAttr]
   | ForeignKey (Table (), ColName)
 

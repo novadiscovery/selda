@@ -12,7 +12,7 @@ module Database.Selda.FieldSelectors
 import Database.Selda.Generic (Relational)
 import Database.Selda.Selectors as S ( Selector, unsafeSelector )
 import Database.Selda.SqlType (SqlType)
-import Data.Kind (Constraint)
+import Data.Kind (Constraint, Type)
 import GHC.Generics
     ( Generic(Rep), K1, M1, type (:*:), S, Meta(MetaSel) )
 import GHC.TypeLits
@@ -20,13 +20,13 @@ import GHC.TypeLits
 import GHC.OverloadedLabels ( IsLabel(..) )
 
 -- | Get the next nested type.
-type family GetFieldType (f :: * -> *) :: * where
+type family GetFieldType (f :: Type -> Type) :: Type where
   GetFieldType (M1 c i f) = GetFieldType f
   GetFieldType (K1 i a)   = a
 
 -- | Get the type of the field @name@ from the generic representation @a@,
 --   returning the default value @b@ if the field does not exist.
-type family GFieldType (a :: * -> *) (b :: *) (name :: Symbol) :: * where
+type family GFieldType (a :: Type -> Type) (b :: Type) (name :: Symbol) :: Type where
   GFieldType (M1 S ('MetaSel ('Just name) su ss ds) f) b name = GetFieldType f
   GFieldType (M1 c i a) b name = GFieldType a b name
   GFieldType (a :*: b) c name  = GFieldType a (GFieldType b c name) name
@@ -43,7 +43,7 @@ type family NonError (t :: k) :: Constraint where
   NonError t = ()
 
 -- | Internal representation of the "no such selector" error message.
-data NoSuchSelector (t :: *) (s :: Symbol)
+data NoSuchSelector (t :: Type) (s :: Symbol)
 
 -- | Any table type @t@, which has a field named @name@.
 class ( Relational t
@@ -90,7 +90,7 @@ field =
     Left n -> unsafeSelector n
     _      -> error "unreachable"
 
-class GRSel (s :: Symbol) (f :: * -> *) where
+class GRSel (s :: Symbol) (f :: Type -> Type) where
   gSel :: Int -> Either Int Int
 
 instance GRSel name (M1 S ('MetaSel ('Just name) su ss ds) f) where

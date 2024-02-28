@@ -11,6 +11,7 @@ module Database.Selda.MakeSelectors
  ) where
 import Control.Monad.State.Strict
     ( MonadState(state), State, evalState )
+import Data.Kind ( Type )
 import Data.Proxy ( Proxy(..) )
 import GHC.Generics ( Generic(Rep), K1, M1 )
 import qualified GHC.Generics as G
@@ -70,7 +71,7 @@ type family Sels t f where
   Sels t (K1 i a)              = Selector t a
 
 -- | Any table type that can have selectors generated.
-class GSelectors t (f :: * -> *) where
+class GSelectors t (f :: Type -> Type) where
   mkSel :: Proxy f -> Proxy t -> State Int (Sels t f)
 
 instance (SqlRow t, SqlType a) => GSelectors t (K1 i a) where

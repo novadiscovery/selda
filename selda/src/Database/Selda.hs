@@ -175,7 +175,7 @@ import Database.Selda.Frontend
       transaction,
       withoutForeignKeyEnforcement )
 import Database.Selda.Generic
-    ( Generic, relNew, relRow, gRow, gNew, Relational, def )
+    ( Generic, relNew, relRow, Relational, def )
 import Database.Selda.Inner
     ( Aggregates,
       LeftCols,
@@ -228,8 +228,6 @@ import Data.Proxy ( Proxy(..) )
 import Data.String (IsString)
 import Data.Text (Text)
 import Data.Time (Day, TimeOfDay, UTCTime)
-import GHC.Generics (Rep)
-import qualified GHC.Generics as G (from)
 import Unsafe.Coerce ( unsafeCoerce )
 import System.Random (randomIO)
 import GHC.TypeLits as TL

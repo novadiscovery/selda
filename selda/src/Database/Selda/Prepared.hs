@@ -1,4 +1,5 @@
 {-# LANGUAGE TypeFamilies, FlexibleInstances, ScopedTypeVariables #-}
+{-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE MultiParamTypeClasses, FlexibleContexts #-}
 {-# LANGUAGE UndecidableInstances #-}
 -- | Building and executing prepared statements.
