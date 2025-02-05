@@ -41,7 +41,7 @@ sqliteOpen file = do
       Right db -> flip onException (liftIO (close db)) . restore $ do
         absFile <- liftIO $ pack <$> makeAbsolute file
         let backend = sqliteBackend db
-        void . liftIO $ runStmt backend "PRAGMA foreign_keys = ON;" []
+        void . liftIO $ runStmt backend "PRAGMA foreign_keys = ON;PRAGMA journal_mode=WAL;" []
         newConnection backend absFile
 #endif
 
